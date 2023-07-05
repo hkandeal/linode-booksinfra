@@ -16,11 +16,11 @@ metadata:
     type: local
     app: postgres
 spec:
-  storageClassName: hostpath
+  storageClassName: linode-block-storage-retain
   capacity:
     storage: 5Gi
   accessModes:
-    - ReadWriteMany
+  - ReadWriteMany
   local:
     path: "/Users/vijaykumarab/mnt/data"
   nodeAffinity:
@@ -40,9 +40,9 @@ metadata:
   labels:
     app: book-library-postgres-db
 spec:
-  storageClassName: hostpath
+  storageClassName: linode-block-storage-retain
   accessModes:
-    - ReadWriteMany
+  - ReadWriteMany
   resources:
     requests:
       storage: 5Gi
