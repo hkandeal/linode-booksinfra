@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-library-ui-deployments
+  namespace: bozo-book-library-dev
+  labels:
+    application: bozo-book-library
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-library-ui-service
+      namespace: bozo-book-library-dev
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-init-first: 'true'
+        vault.hashicorp.com/role: bozobooks-app
+        vault.hashicorp.com/agent-inject-secret-config: bozobooks/data/reactjs-firebase-config
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{ with secret "bozobooks/data/reactjs-firebase-config" -}}
+            export REACT_APP_FIREBASE_API_KEY="{{ .Data.data.apiKey }}"
+            export REACT_APP_MESSAGE_SENDER_ID="{{ .Data.data.messagingSenderId }}"
+            export REACT_APP_FIREBASE_APP_ID="{{ .Data.data.appId }}"
+            export REACT_APP_FIREBASE_MEASUREMENT_ID="{{ .Data.data.measurementId }}"
+          {{- end }}
+      labels:
+        app: book-library-ui-service
+        namespace: bozo-book-library-dev
+    spec:
+      serviceAccountName: bozobooks-app
+      containers:
+        - name: book-library-ui-service
+          image: abvijaykumar/bozo-book-library-ui-service:156
+          args:
+            - sh
+            - '-c'
+            - source /vault/secrets/config && npm start
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REACT_APP_OTEL_URL
+              value: http://opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/traces
+            - name: REACT_APP_BOOK_LIB_SERVICE_URL
+              value: https://book-library-service-svc.bozo-book-library-dev.svc.cluster.local:8080
+            - name: REACT_APP_BOOK_INFO_SERVICE_URL
+              value: https://book-info-service-svc.bozo-book-library-dev.svc.cluster.local:8080

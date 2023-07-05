@@ -1,0 +1,74 @@
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+  
+  - name: hashicorp
+    url: https://helm.releases.hashicorp.com
+
+  - name: jetstack
+    url: https://charts.jetstack.io
+
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+  
+  - name: argocd
+    url: https://argoproj.github.io/argo-helm
+
+helmDefaults:
+  verify: false
+  wait: true
+  waitForJobs: true
+  createNamespace: true
+
+commonLabels:
+  application-name: bozo-book-library
+
+releases:
+  - name: prom-stack
+    namespace: monitoring
+    chart: prometheus-community/kube-prometheus-stack
+    values: 
+    - ./values/postgres-exporter-helm-values.yaml
+
+  - name: redis-exporter
+    namespace: monitoring
+    chart: prometheus-community/prometheus-redis-exporter
+    values: 
+    - ./values/redis-exporter-helm-values.yaml
+
+  - name: prometheus-postgres-exporter
+    namespace: monitoring
+    chart: prometheus-community/prometheus-postgres-exporter
+    values: 
+    - ./values/postgres-exporter-helm-values.yaml
+
+  - name: loki
+    namespace: monitoring
+    chart: grafana/loki-stack
+    values: 
+    - ./values/bozo-loki-stack-values.yaml
+  
+  - name: vault
+    namespace: vault
+    chart: hashicorp/vault
+    values: 
+    - ./values/helm-vault-raft-values.yaml
+
+
+  - name: cert-manager
+    namespace: cert-manager
+    chart: jetstack/cert-manager
+    values: 
+    - ./values/cert-manager-values.yaml
+
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    chart: ingress-nginx/ingress-nginx
+
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+

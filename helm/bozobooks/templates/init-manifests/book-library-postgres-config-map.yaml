@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name:  book-library-postgres-db-config
+  namespace: {{.Values.namespace}}
+  labels:
+    app: book-library-postgres-db
+data:
+  POSTGRES_DB: {{.Values.book-library-service.database.db-name}}
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: ""
