@@ -4,10 +4,7 @@ metadata:
   name: local-storage
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
-
 ---
-
-
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -22,15 +19,7 @@ spec:
   accessModes:
   - ReadWriteMany
   local:
-    path: "/Users/vijaykumarab/mnt/data"
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - docker-desktop
+    path: "/Users/hossam/mnt/data"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
