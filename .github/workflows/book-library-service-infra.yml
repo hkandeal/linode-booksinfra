@@ -1,0 +1,29 @@
+
+name: Book Library Service Build Number in K8s Manifest
+
+on:
+  repository_dispatch:
+    types: update-book-library-service-build-number
+  workflow_dispatch:
+
+jobs:
+  DevDeploy:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Update the Build number
+        run: |
+          echo "Updating the Build Number: ${{github.event.client_payload.buildnumber}}"
+
+      - name: Update Image Version in the yaml
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'dev/bozobooks-manifests/deployment-manifests/book-library-service-deployment.yaml'
+          propertyPath: 'spec.template.spec.containers[0].image'
+          value: 'abvijaykumar/bozo-book-library-service:${{ github.event.client_payload.buildnumber}}'
+          masterBranchName: 'main'
+          branch: 'main'
+          message: 'Update Image Version to abvijaykumar/bozo-book-library-service:${{ github.event.client_payload.buildnumber }}' 
