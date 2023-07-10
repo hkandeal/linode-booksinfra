@@ -23,7 +23,7 @@ jobs:
         with:
           valueFile: 'dev/bozobooks-manifests/deployment-manifests/book-library-service-deployment.yaml'
           propertyPath: 'spec.template.spec.containers[0].image'
-          value: 'abvijaykumar/bozo-book-library-service:${{ github.event.client_payload.buildnumber}}'
+          value: 'hossamgbm/bozo-book-library-service:${{ github.event.client_payload.buildnumber}}'
           masterBranchName: 'main'
           branch: 'main'
           message: 'Update Image Version to abvijaykumar/bozo-book-library-service:${{ github.event.client_payload.buildnumber }}' 
