@@ -19,6 +19,20 @@ spec:
         pathType: Prefix
         backend:
           service:
+            name: book-library-ui-svc
+            port:
+              number: 3000
+      - path: /bookinfo
+        pathType: Prefix
+        backend:
+          service:
             name: book-info-service-svc
+            port:
+              number: 8080
+      - path: /booklib
+        pathType: Prefix
+        backend:
+          service:
+            name: book-library-service-svc
             port:
               number: 8080
