@@ -30,7 +30,7 @@ spec:
       serviceAccountName: bozobooks-app
       containers:
         - name: book-library-service
-          image: hossamgbm/bozo-book-library-service:27
+          image: hossamgbm/bozo-book-library-service:30
           args:
             - sh
             - '-c'
