@@ -1,4 +1,4 @@
-#  linode-bozo-book-library-app
+#  linode-bozo-book-library-app-deployments
 
 [![N|Solid](https://cldup.com/dTxpPi9lDf.thumb.png)](https://nodesource.com/products/nsolid)
 
@@ -7,7 +7,7 @@
 ![alt text](image.png)
 
 
- ✨Book Library App ✨
+ ✨Book Library App Deployments✨
 
 ## Features
 
